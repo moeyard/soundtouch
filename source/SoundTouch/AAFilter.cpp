@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///
 /// FIR low-pass (anti-alias) filter with filter coefficient design routine and
-/// MMX optimization.
-///
-/// Anti-alias filter is used to prevent folding of high frequencies when
+/// MMX optimization. 
+/// 
+/// Anti-alias filter is used to prevent folding of high frequencies when 
 /// transposing the sample rate with interpolation.
 ///
 /// Author        : Copyright (c) Olli Parviainen
@@ -12,10 +12,10 @@
 ///
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Last changed  : $Date: 2014-01-05 23:40:22 +0200 (Sun, 05 Jan 2014) $
+// Last changed  : $Date: 2016-01-13 01:26:21 +0800 (Wed, 13 Jan 2016) $
 // File revision : $Revision: 4 $
 //
-// $Id: AAFilter.cpp 177 2014-01-05 21:40:22Z oparviai $
+// $Id: AAFilter.cpp 240 2016-01-12 17:26:21Z oparviai $
 //
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -49,7 +49,7 @@
 
 using namespace soundtouch;
 
-#define PI        3.141592655357989
+#define PI       3.14159265358979323846
 #define TWOPI    (2 * PI)
 
 // define this to save AA filter coefficients to a file
@@ -140,16 +140,16 @@ void AAFilter::calculateCoeffs()
     tempCoeff = TWOPI / (double)length;
 
     sum = 0;
-    for (i = 0; i < length; i ++)
+    for (i = 0; i < length; i ++) 
     {
         cntTemp = (double)i - (double)(length / 2);
 
         temp = cntTemp * wc;
-        if (temp != 0)
+        if (temp != 0) 
         {
             h = sin(temp) / temp;                     // sinc function
-        }
-        else
+        } 
+        else 
         {
             h = 1.0;
         }
@@ -158,7 +158,7 @@ void AAFilter::calculateCoeffs()
         temp = w * h;
         work[i] = temp;
 
-        // calc net sum of coefficients
+        // calc net sum of coefficients 
         sum += temp;
     }
 
@@ -174,7 +174,7 @@ void AAFilter::calculateCoeffs()
     // divided by 16384
     scaleCoeff = 16384.0f / sum;
 
-    for (i = 0; i < length; i ++)
+    for (i = 0; i < length; i ++) 
     {
         temp = work[i] * scaleCoeff;
 //#if SOUNDTOUCH_INTEGER_SAMPLES
@@ -196,8 +196,8 @@ void AAFilter::calculateCoeffs()
 }
 
 
-// Applies the filter to the given sequence of samples.
-// Note : The amount of outputted samples is by value of 'filter length'
+// Applies the filter to the given sequence of samples. 
+// Note : The amount of outputted samples is by value of 'filter length' 
 // smaller than the amount of input samples.
 uint AAFilter::evaluate(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples, uint numChannels) const
 {
@@ -206,8 +206,8 @@ uint AAFilter::evaluate(SAMPLETYPE *dest, const SAMPLETYPE *src, uint numSamples
 
 
 /// Applies the filter to the given src & dest pipes, so that processed amount of
-/// samples get removed from src, and produced amount added to dest
-/// Note : The amount of outputted samples is by value of 'filter length'
+/// samples get removed from src, and produced amount added to dest 
+/// Note : The amount of outputted samples is by value of 'filter length' 
 /// smaller than the amount of input samples.
 uint AAFilter::evaluate(FIFOSampleBuffer &dest, FIFOSampleBuffer &src) const
 {
